@@ -1,0 +1,6 @@
+common:
+    sources:
+        board:
+            - source/board/rp2040.c
+        family:
+            - source/family/raspberry/pico/target.c

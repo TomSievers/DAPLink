@@ -1,0 +1,47 @@
+common:
+    target:
+        - Cortex-M0
+    core:
+        - Cortex-M0
+    macros:
+        - INTERFACE_RP2040
+        - USE_HAL_DRIVER
+        - DAPLINK_HIC_ID=0x97969908  # DAPLINK_HIC_ID_STM32F103XB
+        - __packed=__packed          # Prevent redefinition of __packed with ARMCC
+        - DAPLINK_NO_ASSERT_FILENAMES
+        - XOSC_MHZ=12
+    includes:
+        - source/hic_hal/raspberry/rp2040
+        - source/hic_hal/raspberry/rp2040/cmsis
+        - source/hic_hal/raspberry/rp2040/hal/include
+    sources:
+        hic_hal:
+            - source/hic_hal/raspberry/rp2040
+            - source/hic_hal/raspberry/rp2040/cmsis
+            - source/hic_hal/raspberry/rp2040/hal/src
+
+tool_specific:
+    uvision:
+        misc:
+            ld_flags:
+                - --predefine="-I..\..\..\source\hic_hal\raspberry\rp2040"
+        sources:
+            hic_hal:
+                - source/hic_hal/raspberry/rp2040/armcc
+    armcc:
+        misc:
+            asm_flags:
+                - --no_unaligned_access
+            c_flags:
+                - --no_unaligned_access
+        sources:
+            hic_hal:
+                - source/hic_hal/raspberry/rp2040/armcc
+    armclang:
+        sources:
+            hic_hal:
+                - source/hic_hal/raspberry/rp2040/armcc
+    gcc_arm:
+        sources:
+            hic_hal:
+                - source/hic_hal/raspberry/rp2040/gcc
