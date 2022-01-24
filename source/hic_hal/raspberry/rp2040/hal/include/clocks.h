@@ -9,7 +9,7 @@
 #ifndef _HARDWARE_STRUCTS_CLOCKS_H
 #define _HARDWARE_STRUCTS_CLOCKS_H
 
-#include "clocks_regs.h"
+#include "regs/clocks.h"
 
 #define MHZ _u(1000000)
 

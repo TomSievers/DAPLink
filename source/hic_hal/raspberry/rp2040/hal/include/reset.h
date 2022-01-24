@@ -1,7 +1,7 @@
 #ifndef RESET_H_
 #define RESET_H_
 
-#include "reset_regs.h"
+#include "regs/reset.h"
 
 /// \tag::resets_hw[]
 typedef struct {

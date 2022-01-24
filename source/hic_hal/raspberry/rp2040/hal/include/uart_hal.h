@@ -7,7 +7,9 @@
 #ifndef _HARDWARE_UART_H
 #define _HARDWARE_UART_H
 
-#include "uart_regs.h"
+#include "regs/uart.h"
+#include "bit_ops.h"
+#include "stdlib.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -269,9 +271,10 @@ static inline uart_hw_t *uart_get_hw(uart_inst_t *uart) {
  *  \ingroup hardware_uart
  */
 typedef enum {
-    UART_PARITY_NONE,
-    UART_PARITY_EVEN,
-    UART_PARITY_ODD
+    UART_PARITY_NONE_I = 0,
+    UART_PARITY_ODD_I = 1,
+    UART_PARITY_EVEN_I = 2
+    
 } uart_parity_t;
 
 // ----------------------------------------------------------------------------
@@ -339,12 +342,12 @@ static inline void uart_set_hw_flow(uart_inst_t *uart, bool cts, bool rts) {
 static inline void uart_set_format(uart_inst_t *uart, uint data_bits, uint stop_bits, uart_parity_t parity) {
     invalid_params_if(UART, data_bits < 5 || data_bits > 8);
     invalid_params_if(UART, stop_bits != 1 && stop_bits != 2);
-    invalid_params_if(UART, parity != UART_PARITY_NONE && parity != UART_PARITY_EVEN && parity != UART_PARITY_ODD);
+    invalid_params_if(UART, parity != UART_PARITY_NONE_I && parity != UART_PARITY_EVEN_I && parity != UART_PARITY_ODD_I);
     hw_write_masked(&uart_get_hw(uart)->lcr_h,
                    ((data_bits - 5u) << UART_UARTLCR_H_WLEN_LSB) |
                    ((stop_bits - 1u) << UART_UARTLCR_H_STP2_LSB) |
-                   (bool_to_bit(parity != UART_PARITY_NONE) << UART_UARTLCR_H_PEN_LSB) |
-                   (bool_to_bit(parity == UART_PARITY_EVEN) << UART_UARTLCR_H_EPS_LSB),
+                   (bool_to_bit(parity != UART_PARITY_NONE_I) << UART_UARTLCR_H_PEN_LSB) |
+                   (bool_to_bit(parity == UART_PARITY_EVEN_I) << UART_UARTLCR_H_EPS_LSB),
                    UART_UARTLCR_H_WLEN_BITS |
                    UART_UARTLCR_H_STP2_BITS |
                    UART_UARTLCR_H_PEN_BITS |
@@ -592,10 +595,14 @@ bool uart_is_readable_within_us(uart_inst_t *uart, uint32_t us);
  * \param is_tx true for sending data to the UART instance, false for receiving data from the UART instance
  */
 static inline uint uart_get_dreq(uart_inst_t *uart, bool is_tx) {
-    static_assert(DREQ_UART0_RX == DREQ_UART0_TX + 1, "");
+    /*static_assert(DREQ_UART0_RX == DREQ_UART0_TX + 1, "");
     static_assert(DREQ_UART1_RX == DREQ_UART1_TX + 1, "");
     static_assert(DREQ_UART1_TX == DREQ_UART0_TX + 2, "");
-    return DREQ_UART0_TX + uart_get_index(uart) * 2 + !is_tx;
+    return DREQ_UART0_TX + uart_get_index(uart) * 2 + !is_tx;*/
+
+    #pragma message "STUB FUNCTION"
+
+    return 0;
 }
 
 #ifdef __cplusplus

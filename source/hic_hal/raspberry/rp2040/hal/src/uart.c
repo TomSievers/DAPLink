@@ -1,5 +1,6 @@
 #include "uart_hal.h"
 #include "reset.h"
+#include "clocks.h"
 
 #if PICO_UART_ENABLE_CRLF_SUPPORT
 short uart_char_to_line_feed[2];
@@ -18,7 +19,7 @@ uint uart_init(uart_inst_t *uart, uint baudrate) {
 
     // Any LCR writes need to take place before enabling the UART
     uint baud = uart_set_baudrate(uart, baudrate);
-    uart_set_format(uart, 8, 1, UART_PARITY_NONE);
+    uart_set_format(uart, 8, 1, UART_PARITY_NONE_I);
 
     // Enable the UART, both TX and RX
     uart_get_hw(uart)->cr = UART_UARTCR_UARTEN_BITS | UART_UARTCR_TXE_BITS | UART_UARTCR_RXE_BITS;

@@ -1,8 +1,8 @@
-#ifndef REGS_H_
-#define REGS_H_
+#ifndef BIT_OPS_H_
+#define BIT_OPS_H_
 
 #include <stdint.h>
-#include "addrmap.h"
+#include "regs/addrmap.h"
 
 #ifndef __force_inline
 #define __force_inline
@@ -78,4 +78,4 @@ __force_inline static void hw_write_masked(io_rw_32 *addr, uint32_t values, uint
 
 static __force_inline void tight_loop_contents(void) {}
 
-#endif //REGS_H_
+#endif //BIT_OPS_H_

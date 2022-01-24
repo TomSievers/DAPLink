@@ -28,8 +28,8 @@
 #ifndef _HARDWARE_GPIO_H_
 #define _HARDWARE_GPIO_H_
 
-#include "addrmap.h"
-#include "gpio_regs.h"
+#include "regs/addrmap.h"
+#include "regs/gpio.h"
 
 /** \file gpio.h
  *  \defgroup hardware_gpio hardware_gpio
@@ -175,8 +175,6 @@ enum gpio_drive_strength {
     GPIO_DRIVE_STRENGTH_8MA = 2, ///< 8 mA nominal drive strength
     GPIO_DRIVE_STRENGTH_12MA = 3 ///< 12 mA nominal drive strength
 };
-
-#define NUM_BANK0_GPIOS 30
 
 // Reference to datasheet: https://datasheets.raspberrypi.com/rp2040/rp2040-datasheet.pdf#tab-registerlist_pads_bank0
 //
