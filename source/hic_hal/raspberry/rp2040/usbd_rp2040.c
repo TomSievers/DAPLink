@@ -24,14 +24,255 @@
 *      Rev.:    V4.70
 *---------------------------------------------------------------------------*/
 
-/* Double Buffering is not supported                                         */
-
 #include <rl_usb.h>
+#include "rp2040.h"
+
+/*
+ *  USB Device Initialize Function
+ *   Called by the User to initialize USB
+ *    Return Value:    None
+ */
+void USBD_Init(void)
+{
+
+}
+
+/*
+ *  USB Device Connect Function
+ *   Called by the User to Connect/Disconnect USB Device
+ *    Parameters:      con:   Connect/Disconnect
+ *    Return Value:    None
+ */
+void USBD_Connect(BOOL con)
+{
+
+}
+
+/*
+ *  USB Device Reset Function
+ *   Called automatically on USB Device Reset
+ *    Return Value:    None
+ */
+void USBD_Reset(void)
+{
+
+}
+
+/*
+ *  USB Device Suspend Function
+ *   Called automatically on USB Device Suspend
+ *    Return Value:    None
+ */
+void USBD_Suspend(void)
+{
+
+}
+
+/*
+ *  USB Device Resume Function
+ *   Called automatically on USB Device Resume
+ *    Return Value:    None
+ */
+void USBD_Resume(void)
+{
+
+}
+
+/*
+ *  USB Device Remote Wakeup Function
+ *   Called automatically on USB Device Remote Wakeup
+ *    Return Value:    None
+ */
+void USBD_WakeUp(void)
+{
+
+}
+
+/*
+ *  USB Device Remote Wakeup Configuration Function
+ *    Parameters:      cfg:   Device Enable/Disable
+ *    Return Value:    None
+ */
+void USBD_WakeUpCfg(BOOL cfg)
+{
+
+}
+
+/*
+ *  USB Device Set Address Function
+ *    Parameters:      adr:   USB Device Address
+ *                     setup: Called in setup stage (!=0), else after status stage
+ *    Return Value:    None
+ */
+void USBD_SetAddress(U32 adr, U32 setup)
+{
+
+}
+
+/*
+ *  USB Device Configure Function
+ *    Parameters:      cfg:   Device Configure/Deconfigure
+ *    Return Value:    None
+ */
+void USBD_Configure(BOOL cfg)
+{
+
+}
+
+/*
+ *  Configure USB Device Endpoint according to Descriptor
+ *    Parameters:      pEPD:  Pointer to Device Endpoint Descriptor
+ *    Return Value:    None
+ */
+void USBD_ConfigEP(USB_ENDPOINT_DESCRIPTOR *pEPD)
+{
+
+}
+
+/*
+ *  Set Direction for USB Device Control Endpoint
+ *    Parameters:      dir:   Out (dir == 0), In (dir <> 0)
+ *    Return Value:    None
+ */
+void USBD_DirCtrlEP(U32 dir)
+{
+
+}
+
+/*
+ *  Enable USB Device Endpoint
+ *    Parameters:      EPNum: Device Endpoint Number
+ *                       EPNum.0..3: Address
+ *                       EPNum.7:    Dir
+ *    Return Value:    None
+ */
+void USBD_EnableEP(U32 EPNum)
+{
+
+}
+
+/*
+ *  Disable USB Endpoint
+ *    Parameters:      EPNum: Endpoint Number
+ *                       EPNum.0..3: Address
+ *                       EPNum.7:    Dir
+ *    Return Value:    None
+ */
+void USBD_DisableEP(U32 EPNum)
+{
+
+}
+
+/*
+ *  Reset USB Device Endpoint
+ *    Parameters:      EPNum: Device Endpoint Number
+ *                       EPNum.0..3: Address
+ *                       EPNum.7:    Dir
+ *    Return Value:    None
+ */
+void USBD_ResetEP(U32 EPNum)
+{
+
+}
+
+/*
+ *  Set Stall for USB Device Endpoint
+ *    Parameters:      EPNum: Device Endpoint Number
+ *                       EPNum.0..3: Address
+ *                       EPNum.7:    Dir
+ *    Return Value:    None
+ */
+void USBD_SetStallEP(U32 EPNum)
+{
+
+}
+
+/*
+ *  Clear Stall for USB Device Endpoint
+ *    Parameters:      EPNum: Device Endpoint Number
+ *                       EPNum.0..3: Address
+ *                       EPNum.7:    Dir
+ *    Return Value:    None
+ */
+void USBD_ClrStallEP(U32 EPNum)
+{
+
+}
+
+/*
+ *  Clear USB Device Endpoint Buffer
+ *    Parameters:      EPNum: Device Endpoint Number
+ *                       EPNum.0..3: Address
+ *                       EPNum.7:    Dir
+ *    Return Value:    None
+ */
+void USBD_ClearEPBuf(U32 EPNum)
+{
+
+}
+
+/*
+ *  Read USB Device Endpoint Data
+ *    Parameters:      EPNum: Device Endpoint Number
+ *                       EPNum.0..3: Address
+ *                       EPNum.7:    Dir
+ *                     pData: Pointer to Data Buffer
+ *    Return Value:    Number of bytes read
+ */
+U32 USBD_ReadEP(U32 EPNum, U8 *pData, U32 cnt)
+{
+
+}
+
+/*
+ *  Write USB Device Endpoint Data
+ *    Parameters:      EPNum: Device Endpoint Number
+ *                       EPNum.0..3: Address
+ *                       EPNum.7:    Dir
+ *                     pData: Pointer to Data Buffer
+ *                     cnt:   Number of bytes to write
+ *    Return Value:    Number of bytes written
+ */
+U32 USBD_WriteEP(U32 EPNum, U8 *pData, U32 cnt)
+{
+
+}
+
+/*
+ *  Get USB Device Last Frame Number
+ *    Parameters:      None
+ *    Return Value:    Frame Number
+ */
+U32 USBD_GetFrame(void)
+{
+
+}
+
+/*
+ *  Get USB Last Error Code
+ *    Parameters:      None
+ *    Return Value:    Error Code
+ */
+U32 USBD_GetError(void)
+{
+
+}
+
+void USBD_Handler(void)
+{
+
+}
+
+
+/*#include <rl_usb.h>
 #include "rp2040.h"
 #include "usbreg.h"
 #include "IO_Config.h"
 #include "cortex_m.h"
 #include "string.h"
+
+#include "reset.h"
+#include "irq.h"
 
 #define __NO_USB_LIB_C
 #include "usb_config.c"
@@ -44,11 +285,11 @@
 
 #define USB_DBL_BUF_EP      0x0000
 
-#define EP_BUF_ADDR (sizeof(EP_BUF_DSCR)*(USBD_EP_NUM+1)) /* Endpoint Buf Adr */
+#define EP_BUF_ADDR (sizeof(EP_BUF_DSCR)*(USBD_EP_NUM+1)) 
 
-EP_BUF_DSCR *pBUF_DSCR = (EP_BUF_DSCR *)USB_PMA_ADDR; /* Ptr to EP Buf Desc   */
+EP_BUF_DSCR *pBUF_DSCR = (EP_BUF_DSCR *)USB_PMA_ADDR; 
 
-U16 FreeBufAddr;                        /* Endpoint Free Buffer Address       */
+U16 FreeBufAddr;                  
 
 uint32_t StatQueue[(USBD_EP_NUM + 1) * 2 + 1];
 uint32_t StatQueueHead = 0;
@@ -88,36 +329,20 @@ inline static uint32_t stat_is_empty()
 }
 
 
-/*
- *  Reset Endpoint
- *    Parameters:      EPNum: Endpoint Number
- *                       EPNum.0..3: Address
- *                       EPNum.7:    Dir
- *    Return Value:    None
- */
-
 void EP_Reset(U32 EPNum)
 {
     U32 num, val;
     num = EPNum & 0x0F;
     val = EPxREG(num);
 
-    if (EPNum & 0x80) {                   /* IN Endpoint                        */
+    if (EPNum & 0x80) {          
         EPxREG(num) = val & (EP_MASK | EP_DTOG_TX);
-    } else {                              /* OUT Endpoint                       */
+    } else {                      
         EPxREG(num) = val & (EP_MASK | EP_DTOG_RX);
     }
 }
 
 
-/*
- *  Set Endpoint Status
- *    Parameters:      EPNum: Endpoint Number
- *                       EPNum.0..3: Address
- *                       EPNum.7:    Dir
- *                     stat: New Status
- *    Return Value:    None
- */
 
 void EP_Status(U32 EPNum, U32 stat)
 {
@@ -125,81 +350,42 @@ void EP_Status(U32 EPNum, U32 stat)
     num = EPNum & 0x0F;
     val = EPxREG(num);
 
-    if (EPNum & 0x80) {                   /* IN Endpoint                        */
+    if (EPNum & 0x80) {             
         EPxREG(num) = EP_VAL_UNCHANGED(val) | ((val ^ stat) & EP_STAT_TX);
-    } else {                              /* OUT Endpoint                       */
+    } else {                         
         EPxREG(num) = EP_VAL_UNCHANGED(val) | ((val ^ stat) & EP_STAT_RX);
     }
 }
 
 
-/*
- *  USB Device Interrupt enable
- *   Called by USBD_Init to enable the USB Interrupt
- *    Return Value:    None
- */
-
-#ifdef __RTX
-void __svc(1) USBD_IntrEna(void);
-void __SVC_1(void)
-{
-#else
-void          USBD_IntrEna(void)
-{
-#endif
-    NVIC_EnableIRQ(USB_LP_CAN1_RX0_IRQn);
-}
-
-
-/*
- *  USB Device Initialize Function
- *   Called by the User to initialize USB
- *    Return Value:    None
- */
 
 void USBD_Init(void)
 {
-    RCC->APB1ENR |= (1 << 23);            /* enable clock for USB               */
-    USBD_IntrEna();                       /* Enable USB Interrupts              */
-    /* Control USB connecting via SW                                            */
-    USB_CONNECT_OFF();
+    reset_block(kRESET_USB);
+
 }
 
-
-/*
- *  USB Device Connect Function
- *   Called by the User to Connect/Disconnect USB Device
- *    Parameters:      con:   Connect/Disconnect
- *    Return Value:    None
- */
 
 void USBD_Connect(BOOL con)
 {
     if (con) {
-        CNTR = CNTR_FRES;                   /* Force USB Reset                    */
+        CNTR = CNTR_FRES;          
         CNTR = 0;
-        ISTR = 0;                           /* Clear Interrupt Status             */
-        CNTR = CNTR_RESETM | CNTR_SUSPM | CNTR_WKUPM; /* USB Interrupt Mask       */
+        ISTR = 0;                    
+        CNTR = CNTR_RESETM | CNTR_SUSPM | CNTR_WKUPM;
         USB_CONNECT_ON();
     } else {
-        CNTR = CNTR_FRES | CNTR_PDWN;       /* Switch Off USB Device              */
+        CNTR = CNTR_FRES | CNTR_PDWN;     
         USB_CONNECT_OFF();
     }
 }
 
 
-/*
- *  USB Device Reset Function
- *   Called automatically on USB Device Reset
- *    Return Value:    None
- */
-
 void USBD_Reset(void)
 {
     NVIC_DisableIRQ(USB_LP_CAN1_RX0_IRQn);
 
-    /* Double Buffering is not yet supported                                    */
-    ISTR = 0;                             /* Clear Interrupt Status             */
+    ISTR = 0;        
     CNTR = CNTR_CTRM | CNTR_RESETM | CNTR_SUSPM | CNTR_WKUPM |
 #ifdef __RTX
            ((USBD_RTX_DevTask   != 0) ? CNTR_ERRM    : 0) |
@@ -213,8 +399,7 @@ void USBD_Reset(void)
            ((USBD_P_SOF_Event   != 0) ? CNTR_ESOFM   : 0);
 #endif
     FreeBufAddr = EP_BUF_ADDR;
-    BTABLE = 0x00;                        /* set BTABLE Address                 */
-    /* Setup Control Endpoint 0 */
+    BTABLE = 0x00;                
     pBUF_DSCR->ADDR_TX = FreeBufAddr;
     FreeBufAddr += USBD_MAX_PACKET0;
     pBUF_DSCR->ADDR_RX = FreeBufAddr;
@@ -227,67 +412,42 @@ void USBD_Reset(void)
     }
 
     EPxREG(0) = EP_CONTROL | EP_RX_VALID;
-    DADDR = DADDR_EF | 0;                 /* Enable USB Default Address         */
+    DADDR = DADDR_EF | 0;           
 
     NVIC_EnableIRQ(USB_LP_CAN1_RX0_IRQn);
 }
 
 
-/*
- *  USB Device Suspend Function
- *   Called automatically on USB Device Suspend
- *    Return Value:    None
- */
+
 
 void USBD_Suspend(void)
 {
-    CNTR |= CNTR_FSUSP;                   /* Force Suspend                      */
-    CNTR |= CNTR_LPMODE;                  /* Low Power Mode                     */
+    CNTR |= CNTR_FSUSP;    
+    CNTR |= CNTR_LPMODE;      
 }
 
 
-/*
- *  USB Device Resume Function
- *   Called automatically on USB Device Resume
- *    Return Value:    None
- */
+
 
 void USBD_Resume(void)
 {
-    /* Performed by Hardware                                                    */
 }
 
-
-/*
- *  USB Device Remote Wakeup Function
- *   Called automatically on USB Device Remote Wakeup
- *    Return Value:    None
- */
 
 void USBD_WakeUp(void)
 {
-    CNTR &= ~CNTR_FSUSP;                  /* Clear Suspend                      */
+    CNTR &= ~CNTR_FSUSP;       
 }
 
 
-/*
- *  USB Device Remote Wakeup Configuration Function
- *    Parameters:      cfg:   Device Enable/Disable
- *    Return Value:    None
- */
+
 
 void USBD_WakeUpCfg(BOOL cfg)
 {
-    /* Not needed                                                               */
 }
 
 
-/*
- *  USB Device Set Address Function
- *    Parameters:      adr:   USB Device Address
- *                     setup: Called in setup stage (!=0), else after status stage
- *    Return Value:    None
- */
+
 
 void USBD_SetAddress(U32 adr, U32 setup)
 {
@@ -299,30 +459,21 @@ void USBD_SetAddress(U32 adr, U32 setup)
 }
 
 
-/*
- *  USB Device Configure Function
- *    Parameters:      cfg:   Device Configure/Deconfigure
- *    Return Value:    None
- */
+
 
 void USBD_Configure(BOOL cfg)
 {
     if (cfg == __FALSE) {
         FreeBufAddr  = EP_BUF_ADDR;
-        FreeBufAddr += 2 * USBD_MAX_PACKET0; /* reset Buffer address               */
+        FreeBufAddr += 2 * USBD_MAX_PACKET0; 
     }
 }
 
 
-/*
- *  Configure USB Device Endpoint according to Descriptor
- *    Parameters:      pEPD:  Pointer to Device Endpoint Descriptor
- *    Return Value:    None
- */
+
 
 void USBD_ConfigEP(USB_ENDPOINT_DESCRIPTOR *pEPD)
 {
-    /* Double Buffering is not yet supported                                    */
     U32 num, val;
     num = pEPD->bEndpointAddress & 0x0F;
     val = pEPD->wMaxPacketSize;
@@ -372,39 +523,19 @@ void USBD_ConfigEP(USB_ENDPOINT_DESCRIPTOR *pEPD)
 }
 
 
-/*
- *  Set Direction for USB Device Control Endpoint
- *    Parameters:      dir:   Out (dir == 0), In (dir <> 0)
- *    Return Value:    None
- */
-
 void USBD_DirCtrlEP(U32 dir)
 {
-    /* Not needed                                                               */
 }
 
 
-/*
- *  Enable USB Device Endpoint
- *    Parameters:      EPNum: Device Endpoint Number
- *                       EPNum.0..3: Address
- *                       EPNum.7:    Dir
- *    Return Value:    None
- */
+
 
 void USBD_EnableEP(U32 EPNum)
 {
-    EP_Status(EPNum, EP_TX_NAK | EP_RX_VALID);    /* EP is able to receive      */
+    EP_Status(EPNum, EP_TX_NAK | EP_RX_VALID); 
 }
 
 
-/*
- *  Disable USB Endpoint
- *    Parameters:      EPNum: Endpoint Number
- *                       EPNum.0..3: Address
- *                       EPNum.7:    Dir
- *    Return Value:    None
- */
 
 void USBD_DisableEP(U32 EPNum)
 {
@@ -412,13 +543,7 @@ void USBD_DisableEP(U32 EPNum)
 }
 
 
-/*
- *  Reset USB Device Endpoint
- *    Parameters:      EPNum: Device Endpoint Number
- *                       EPNum.0..3: Address
- *                       EPNum.7:    Dir
- *    Return Value:    None
- */
+
 
 void USBD_ResetEP(U32 EPNum)
 {
@@ -426,13 +551,7 @@ void USBD_ResetEP(U32 EPNum)
 }
 
 
-/*
- *  Set Stall for USB Device Endpoint
- *    Parameters:      EPNum: Device Endpoint Number
- *                       EPNum.0..3: Address
- *                       EPNum.7:    Dir
- *    Return Value:    None
- */
+
 
 void USBD_SetStallEP(U32 EPNum)
 {
@@ -440,28 +559,15 @@ void USBD_SetStallEP(U32 EPNum)
 }
 
 
-/*
- *  Clear Stall for USB Device Endpoint
- *    Parameters:      EPNum: Device Endpoint Number
- *                       EPNum.0..3: Address
- *                       EPNum.7:    Dir
- *    Return Value:    None
- */
+
 
 void USBD_ClrStallEP(U32 EPNum)
 {
-    EP_Reset(EPNum);                      /* reset DTog Bits                    */
+    EP_Reset(EPNum);               
     EP_Status(EPNum, EP_TX_VALID | EP_RX_VALID);
 }
 
 
-/*
- *  Clear USB Device Endpoint Buffer
- *    Parameters:      EPNum: Device Endpoint Number
- *                       EPNum.0..3: Address
- *                       EPNum.7:    Dir
- *    Return Value:    None
- */
 
 void USBD_ClearEPBuf(U32 EPNum)
 {
@@ -469,18 +575,10 @@ void USBD_ClearEPBuf(U32 EPNum)
 }
 
 
-/*
- *  Read USB Device Endpoint Data
- *    Parameters:      EPNum: Device Endpoint Number
- *                       EPNum.0..3: Address
- *                       EPNum.7:    Dir
- *                     pData: Pointer to Data Buffer
- *    Return Value:    Number of bytes read
- */
+
 
 U32 USBD_ReadEP(U32 EPNum, U8 *pData, U32 bufsz)
 {
-    /* Double Buffering is not yet supported                                    */
     U32 num, cnt, *pv, n;
     num = EPNum & 0x0F;
     pv  = (U32 *)(USB_PMA_ADDR + 2 * ((pBUF_DSCR + num)->ADDR_RX));
@@ -499,19 +597,8 @@ U32 USBD_ReadEP(U32 EPNum, U8 *pData, U32 bufsz)
 }
 
 
-/*
- *  Write USB Device Endpoint Data
- *    Parameters:      EPNum: Device Endpoint Number
- *                       EPNum.0..3: Address
- *                       EPNum.7:    Dir
- *                     pData: Pointer to Data Buffer
- *                     cnt:   Number of bytes to write
- *    Return Value:    Number of bytes written
- */
-
 U32 USBD_WriteEP(U32 EPNum, U8 *pData, U32 cnt)
 {
-    /* Double Buffering is not yet supported                                    */
     U32 num, *pv, n;
     U16 statusEP;
     num = EPNum & 0x0F;
@@ -526,18 +613,12 @@ U32 USBD_WriteEP(U32 EPNum, U8 *pData, U32 cnt)
     statusEP = EPxREG(num);
 
     if ((statusEP & EP_STAT_TX) != EP_TX_STALL) {
-        EP_Status(EPNum, EP_TX_VALID);      /* do not make EP valid if stalled    */
+        EP_Status(EPNum, EP_TX_VALID);     
     }
 
     return (cnt);
 }
 
-
-/*
- *  Get USB Device Last Frame Number
- *    Parameters:      None
- *    Return Value:    Frame Number
- */
 
 U32 USBD_GetFrame(void)
 {
@@ -546,24 +627,15 @@ U32 USBD_GetFrame(void)
 
 
 #ifdef __RTX
-U32 LastError;                          /* Last Error                         */
+U32 LastError;                        
 
-/*
- *  Get USB Last Error Code
- *    Parameters:      None
- *    Return Value:    Error Code
- */
+
 
 U32 USBD_GetError(void)
 {
     return (LastError);
 }
 #endif
-
-
-/*
- *  USB Device Interrupt Service Routine
- */
 
 void USB_LP_CAN1_RX0_IRQHandler(void)
 {
@@ -616,13 +688,11 @@ void USBD_Handler(void)
     U32 istr, num, val, num_val;
     cortex_int_state_t state;
 
-    // Get ISTR
     state = cortex_int_get_and_disable();
     istr = LastIstr;
     LastIstr = 0;
     cortex_int_restore(state);
 
-    /* USB Reset Request                                                        */
     if (istr & ISTR_RESET) {
         USBD_Reset();
         usbd_reset_core();
@@ -641,7 +711,6 @@ void USBD_Handler(void)
 #endif
     }
 
-    /* USB Suspend Request                                                      */
     if (istr & ISTR_SUSP) {
         USBD_Suspend();
 #ifdef __RTX
@@ -659,7 +728,6 @@ void USBD_Handler(void)
 #endif
     }
 
-    /* USB Wakeup                                                               */
     if (istr & ISTR_WKUP) {
         USBD_WakeUp();
 #ifdef __RTX
@@ -677,7 +745,6 @@ void USBD_Handler(void)
 #endif
     }
 
-    /* Start of Frame                                                           */
     if (istr & ISTR_SOF) {
 #ifdef __RTX
 
@@ -694,7 +761,6 @@ void USBD_Handler(void)
 #endif
     }
 
-    /* PMA Over/underrun                                                        */
     if (istr & ISTR_PMAOVR) {
 #ifdef __RTX
         LastError = 2;
@@ -712,7 +778,6 @@ void USBD_Handler(void)
 #endif
     }
 
-    /* Error: No Answer, CRC Error, Bit Stuff Error, Frame Format Error         */
     if (istr & ISTR_ERR) {
 #ifdef __RTX
         LastError = 1;
@@ -730,7 +795,6 @@ void USBD_Handler(void)
 #endif
     }
 
-    /* Endpoint Interrupts                                                      */
     while ((istr & ISTR_CTR) && !stat_is_empty()) {
         num_val = stat_deque();
         num = (num_val >> EP_NUM_SHIFT) & EP_NUM_MASK;
@@ -767,4 +831,4 @@ void USBD_Handler(void)
 #endif
         }
     }
-}
+}*/

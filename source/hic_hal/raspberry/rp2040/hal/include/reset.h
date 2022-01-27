@@ -2,6 +2,7 @@
 #define RESET_H_
 
 #include "regs/reset.h"
+#include "core/stdint.h"
 
 /// \tag::resets_hw[]
 typedef struct {

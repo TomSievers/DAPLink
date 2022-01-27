@@ -10,6 +10,7 @@
 #define _HARDWARE_STRUCTS_CLOCKS_H
 
 #include "regs/clocks.h"
+#include "core/stdint.h"
 
 #define MHZ _u(1000000)
 
@@ -323,6 +324,8 @@ typedef struct {
 #define clocks_hw ((clocks_hw_t *const)CLOCKS_BASE)
 
 int clock_configure(enum clock_index clk_index, uint32_t src, uint32_t auxsrc, uint32_t src_freq, uint32_t freq);
+
+uint32_t clock_get_hz(enum clock_index clk_index);
 
 // Reference to datasheet: https://datasheets.raspberrypi.com/rp2040/rp2040-datasheet.pdf#tab-registerlist_xosc
 //

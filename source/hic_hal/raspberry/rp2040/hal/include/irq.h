@@ -11,7 +11,9 @@
 
 #include "regs/addrmap.h"
 #include "regs/irq.h"
+#include "core/stdint.h"
 #include "m0plus_regs.h"
+
 /** \file irq.h
  *  \defgroup hardware_irq hardware_irq
  *

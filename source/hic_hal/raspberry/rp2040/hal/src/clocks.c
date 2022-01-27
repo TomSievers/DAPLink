@@ -89,6 +89,19 @@ int clock_configure(enum clock_index clk_index, uint32_t src, uint32_t auxsrc, u
 }
 /// \end::clock_configure[]
 
+uint32_t clock_get_hz(enum clock_index clk_index)
+{
+    if(clk_index == clk_ref)
+    {
+        return XOSC_MHZ * MHZ;
+    } else if(clk_index == clk_sys || clk_index == clk_peri)
+    {
+        return 125*MHZ;
+    } else {
+        return 48*MHZ;
+    }
+}
+
 
 #define STARTUP_DELAY (((((XOSC_MHZ * 1000000) / 1000) + 128) / 256) * 1)
 

@@ -9,6 +9,7 @@
 
 #include "regs/uart.h"
 #include "bit_ops.h"
+#include "core/stdint.h"
 #include "stdlib.h"
 
 #ifdef __cplusplus

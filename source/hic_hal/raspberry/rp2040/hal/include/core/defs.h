@@ -7,9 +7,6 @@
 #ifndef _HARDWARE_PLATFORM_DEFS_H
 #define _HARDWARE_PLATFORM_DEFS_H
 
-#include <stdint.h>
-#include <stdbool.h>
-
 #ifndef __force_inline
 #define __force_inline
 #endif
@@ -48,6 +45,14 @@
 
 #define _REG_(x)
 
+#ifndef PICO_STACK_SIZE
+#define PICO_STACK_SIZE _u(0x800)
+#endif
+
+#ifndef PICO_HEAP_SIZE
+#define PICO_HEAP_SIZE _u(0x800)
+#endif
+
 #pragma message "STUB MACROS"
 
 #define invalid_params_if(x, test)
@@ -60,25 +65,11 @@
 #define assert(x)
 #define static_assert(x, y)
 
-#define bool_to_bit(x) (x == true) ? 1 : 0 
+#define bool_to_bit(x) (x != 0) ? 1 : 0 
 
-
+#ifndef __unused
 #define __unused __attribute__((unused))
-
-typedef volatile uint32_t io_rw_32;
-typedef const volatile uint32_t io_ro_32;
-typedef volatile uint32_t io_wo_32;
-typedef volatile uint16_t io_rw_16;
-typedef const volatile uint16_t io_ro_16;
-typedef volatile uint16_t io_wo_16;
-typedef volatile uint8_t io_rw_8;
-typedef const volatile uint8_t io_ro_8;
-typedef volatile uint8_t io_wo_8;
-
-typedef volatile uint8_t *const ioptr;
-typedef ioptr const const_ioptr;
-
-typedef unsigned int uint;
+#endif
 
 #endif
 

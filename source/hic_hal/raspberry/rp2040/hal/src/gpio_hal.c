@@ -1,4 +1,5 @@
 #include "gpio_hal.h"
+#include "bit_ops.h"
 
 // Get the raw value from the pin, bypassing any muxing or overrides.
 int gpio_get_pad(uint gpio) {
@@ -32,11 +33,11 @@ enum gpio_function gpio_get_function(uint gpio) {
 
 // Note that, on RP2040, setting both pulls enables a "bus keep" function,
 // i.e. weak pull to whatever is current high/low state of GPIO.
-void gpio_set_pulls(uint gpio, int up, int down) {
+void gpio_set_pulls(uint gpio, bool up, bool down) {
     static_assert(gpio >= NUM_BANK0_GPIOS, "Invalid GPIO");
     hw_write_masked(
             &padsbank0_hw->io[gpio],
-            (int_to_bit(up) << PADS_BANK0_GPIO0_PUE_LSB) | (int_to_bit(down) << PADS_BANK0_GPIO0_PDE_LSB),
+            (bool_to_bit(up) << PADS_BANK0_GPIO0_PUE_LSB) | (bool_to_bit(down) << PADS_BANK0_GPIO0_PDE_LSB),
             PADS_BANK0_GPIO0_PUE_BITS | PADS_BANK0_GPIO0_PDE_BITS
     );
 }
@@ -75,7 +76,7 @@ void gpio_set_oeover(uint gpio, uint value) {
     );
 }
 
-void gpio_set_input_hysteresis_enabled(uint gpio, int enabled) {
+void gpio_set_input_hysteresis_enabled(uint gpio, bool enabled) {
     static_assert(gpio >= NUM_BANK0_GPIOS, "Invalid GPIO");
     if (enabled)
         hw_set_bits(&padsbank0_hw->io[gpio], PADS_BANK0_GPIO0_SCHMITT_BITS);
@@ -84,7 +85,7 @@ void gpio_set_input_hysteresis_enabled(uint gpio, int enabled) {
 }
 
 
-int gpio_is_input_hysteresis_enabled(uint gpio) {
+bool gpio_is_input_hysteresis_enabled(uint gpio) {
     static_assert(gpio >= NUM_BANK0_GPIOS, "Invalid GPIO");
     return (padsbank0_hw->io[gpio] & PADS_BANK0_GPIO0_SCHMITT_BITS) != 0;
 }
@@ -119,23 +120,6 @@ enum gpio_drive_strength gpio_get_drive_strength(uint gpio) {
             >> PADS_BANK0_GPIO0_DRIVE_LSB);
 }
 
-static void gpio_irq_handler(void) {
-    io_irq_ctrl_hw_t *irq_ctrl_base = get_core_num() ?
-                                           &iobank0_hw->proc1_irq_ctrl : &iobank0_hw->proc0_irq_ctrl;
-    for (uint gpio = 0; gpio < NUM_BANK0_GPIOS; gpio++) {
-        io_ro_32 *status_reg = &irq_ctrl_base->ints[gpio / 8];
-        uint events = (*status_reg >> 4 * (gpio % 8)) & 0xf;
-        if (events) {
-            // TODO: If both cores care about this event then the second core won't get the irq?
-            gpio_acknowledge_irq(gpio, events);
-            gpio_irq_callback_t callback = _callbacks[get_core_num()];
-            if (callback) {
-                callback(gpio, events);
-            }
-        }
-    }
-}
-
 static void _gpio_set_irq_enabled(uint gpio, uint32_t events, int enabled, io_irq_ctrl_hw_t *irq_ctrl_base) {
     // Clear stale events which might cause immediate spurious handler entry
     gpio_acknowledge_irq(gpio, events);
@@ -149,25 +133,24 @@ static void _gpio_set_irq_enabled(uint gpio, uint32_t events, int enabled, io_ir
         hw_clear_bits(en_reg, events);
 }
 
-void gpio_set_irq_enabled(uint gpio, uint32_t events, int enabled) {
+void gpio_set_irq_enabled(uint gpio, uint32_t events, bool enabled) {
     // Separate mask/force/status per-core, so check which core called, and
     // set the relevant IRQ controls.
-    io_irq_ctrl_hw_t *irq_ctrl_base = get_core_num() ?
-                                           &iobank0_hw->proc1_irq_ctrl : &iobank0_hw->proc0_irq_ctrl;
+    io_irq_ctrl_hw_t *irq_ctrl_base = &iobank0_hw->proc0_irq_ctrl;
     _gpio_set_irq_enabled(gpio, events, enabled, irq_ctrl_base);
 }
 
-void gpio_set_irq_enabled_with_callback(uint gpio, uint32_t events, int enabled, gpio_irq_callback_t callback) {
+void gpio_set_irq_enabled_with_callback(uint gpio, uint32_t events, bool enabled, gpio_irq_callback_t callback) {
     gpio_set_irq_enabled(gpio, events, enabled);
 
     // TODO: Do we want to support a callback per GPIO pin?
     // Install IRQ handler
-    _callbacks[get_core_num()] = callback;
+    /*_callbacks[get_core_num()] = callback;
     irq_set_exclusive_handler(IO_IRQ_BANK0, gpio_irq_handler);
-    irq_set_enabled(IO_IRQ_BANK0, 1);
+    irq_set_enabled(IO_IRQ_BANK0, 1);*/
 }
 
-void gpio_set_dormant_irq_enabled(uint gpio, uint32_t events, int enabled) {
+void gpio_set_dormant_irq_enabled(uint gpio, uint32_t events, bool enabled) {
     io_irq_ctrl_hw_t *irq_ctrl_base = &iobank0_hw->dormant_wake_irq_ctrl;
     _gpio_set_irq_enabled(gpio, events, enabled, irq_ctrl_base);
 }
@@ -176,7 +159,7 @@ void gpio_acknowledge_irq(uint gpio, uint32_t events) {
     iobank0_hw->intr[gpio / 8] = events << 4 * (gpio % 8);
 }
 
-void gpio_set_input_enabled(uint gpio, int enabled) {
+void gpio_set_input_enabled(uint gpio, bool enabled) {
     if (enabled)
         hw_set_bits(&padsbank0_hw->io[gpio], PADS_BANK0_GPIO0_IE_BITS);
     else

@@ -31,6 +31,8 @@
 #ifndef __CORE_CM0PLUS_H_GENERIC
 #define __CORE_CM0PLUS_H_GENERIC
 
+#define SystemCoreClock 125000000
+
 #include <stdint.h>
 
 #ifdef __cplusplus

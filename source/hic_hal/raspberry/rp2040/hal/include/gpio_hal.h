@@ -30,6 +30,7 @@
 
 #include "regs/addrmap.h"
 #include "regs/gpio.h"
+#include "core/stdint.h"
 
 /** \file gpio.h
  *  \defgroup hardware_gpio hardware_gpio

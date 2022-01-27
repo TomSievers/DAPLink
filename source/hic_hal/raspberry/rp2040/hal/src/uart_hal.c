@@ -10,9 +10,6 @@ short uart_char_to_line_feed[2];
 uint uart_init(uart_inst_t *uart, uint baudrate) {
     invalid_params_if(UART, uart != uart0 && uart != uart1);
 
-    if (clock_get_hz(clk_peri) == 0)
-        return 0;
-
 #if PICO_UART_ENABLE_CRLF_SUPPORT
     uart_set_translate_crlf(uart, PICO_UART_DEFAULT_CRLF);
 #endif
@@ -34,7 +31,7 @@ uint uart_init(uart_inst_t *uart, uint baudrate) {
 
 void uart_deinit(uart_inst_t *uart) {
     invalid_params_if(UART, uart != uart0 && uart != uart1);
-    uart_reset(uart);
+    reset_block((uart == uart1) ? kRESET_UART1 : kRESET_UART0);
 }
 
 /// \tag::uart_set_baudrate[]
@@ -76,9 +73,5 @@ void uart_set_translate_crlf(uart_inst_t *uart, bool crlf) {
 }
 
 bool uart_is_readable_within_us(uart_inst_t *uart, uint32_t us) {
-    uint32_t t = time_us_32();
-    do {
-        if (uart_is_readable(uart)) return true;
-    } while ((time_us_32() - t) <= us);
     return false;
 }

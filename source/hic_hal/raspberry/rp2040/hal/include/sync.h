@@ -8,6 +8,7 @@
 #define _HARDWARE_SYNC_H
 
 #include "regs/addrmap.h"
+#include "core/stdint.h"
 #include "regs/gpio.h"
 
 #ifdef __cplusplus

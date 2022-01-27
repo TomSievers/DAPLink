@@ -10,6 +10,7 @@ common:
         - __packed=__packed          # Prevent redefinition of __packed with ARMCC
         - DAPLINK_NO_ASSERT_FILENAMES
         - XOSC_MHZ=12
+        - OS_CLOCK=125000000
     includes:
         - source/hic_hal/raspberry/rp2040
         - source/hic_hal/raspberry/rp2040/cmsis
@@ -17,7 +18,6 @@ common:
     sources:
         hic_hal:
             - source/hic_hal/raspberry/rp2040
-            - source/hic_hal/raspberry/rp2040/cmsis
             - source/hic_hal/raspberry/rp2040/hal/src
 
 tool_specific:
@@ -45,3 +45,5 @@ tool_specific:
         sources:
             hic_hal:
                 - source/hic_hal/raspberry/rp2040/gcc
+        linker_file:
+            - source/hic_hal/raspberry/rp2040/gcc/rp2040.ld

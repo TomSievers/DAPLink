@@ -23,11 +23,8 @@
  * limitations under the License.
  */
 
-#include "rp2040.h"
 #include "DAP_config.h"
 #include "gpio.h"
-#include "daplink.h"
-#include "util.h"
 
 void gpio_init(void)
 {

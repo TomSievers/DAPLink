@@ -1,12 +1,8 @@
 #ifndef BIT_OPS_H_
 #define BIT_OPS_H_
 
-#include <stdint.h>
 #include "regs/addrmap.h"
-
-#ifndef __force_inline
-#define __force_inline
-#endif
+#include "core/stdint.h"
 
 #define hw_alias_check_addr(addr) ((uintptr_t)(addr))
 

@@ -26,15 +26,14 @@
 //                4-byte checksum. Therefore code size cannot exceed 252 bytes.
 // ----------------------------------------------------------------------------
 
-#include "pico/asm_helper.S"
-#include "hardware/regs/addressmap.h"
-#include "hardware/regs/ssi.h"
-#include "hardware/regs/pads_qspi.h"
-
 // ----------------------------------------------------------------------------
 // Config section
 // ----------------------------------------------------------------------------
 // It should be possible to support most flash devices by modifying this section
+
+#include "core/defs.h"
+#include "regs/qspi.h"
+#include "regs/ssi.h"
 
 // The serial flash interface will run at clk_sys/PICO_FLASH_SPI_CLKDIV.
 // This must be a positive, even integer.
@@ -272,13 +271,7 @@ configure_ssi:
 // external flash on cache miss. We are ready to run code from flash.
 
 // Pull in standard exit routine
-#include "boot2_helpers/exit_from_boot2.S"
-
-// Common functions
-#include "boot2_helpers/wait_ssi_ready.S"
-#ifdef PROGRAM_STATUS_REG
-#include "boot2_helpers/read_flash_sreg.S"
-#endif
+#include "asminc/exit_from_boot2.S"
 
 .global literals
 literals:

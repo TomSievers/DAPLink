@@ -1,0 +1,7 @@
+#ifndef ASM_DEFS_H_
+#define ASM_DEFS_H_
+
+#define BINARY_INFO_MARKER_START 0x7188ebf2
+#define BINARY_INFO_MARKER_END 0xe71aa390
+
+#endif
