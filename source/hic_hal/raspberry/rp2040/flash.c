@@ -1,5 +1,7 @@
 #include "flash_hal.h"
 
+#pragma message "STUB FLASH"
+
 uint32_t Init(uint32_t adr, uint32_t clk, uint32_t fnc)
 {
     //

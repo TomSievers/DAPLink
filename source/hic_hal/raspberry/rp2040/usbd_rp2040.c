@@ -27,6 +27,8 @@
 #include <rl_usb.h>
 #include "rp2040.h"
 
+#pragma message "STUB USB"
+
 /*
  *  USB Device Initialize Function
  *   Called by the User to initialize USB
