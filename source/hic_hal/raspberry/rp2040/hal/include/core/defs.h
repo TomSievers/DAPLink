@@ -8,7 +8,7 @@
 #define _HARDWARE_PLATFORM_DEFS_H
 
 #ifndef __force_inline
-#define __force_inline
+#define __force_inline __attribute__((always_inline)) inline
 #endif
 
 #ifndef _u
