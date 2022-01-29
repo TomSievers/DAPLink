@@ -6,7 +6,7 @@
 
 #include "m0plus_regs.h"
 #include "regs/addrmap.h"
-#include "regs/sio.h"
+#include "regs/gpio.h"
 #include "asminc/defs.h"
 
 #ifdef NDEBUG
